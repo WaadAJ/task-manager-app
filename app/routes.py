@@ -10,8 +10,24 @@ router = APIRouter()
 
 
 @router.get("/tasks", response_model=list[Task])
-def get_tasks(db: Session = Depends(get_db)):
-    return db.query(TaskDB).all()
+def get_tasks(
+    completed: bool | None = None,
+    search: str | None = None,
+    skip: int = 0,
+    limit: int = 10,
+    db: Session = Depends(get_db)
+):
+    query = db.query(TaskDB)
+
+    if completed is not None:
+        query = query.filter(TaskDB.completed == completed)
+
+    if search:
+        query = query.filter(TaskDB.title.contains(search))
+
+    tasks = query.offset(skip).limit(limit).all()
+
+    return tasks
 
 
 @router.post("/tasks", response_model=Task)
@@ -71,3 +87,23 @@ def delete_task(task_id: int, db: Session = Depends(get_db)):
     db.commit()
 
     return {"message": "Task deleted successfully"}
+
+@router.post("/tasks/bulk", response_model=list[Task])
+def create_tasks_bulk(tasks: list[TaskCreate], db: Session = Depends(get_db)):
+    new_tasks = []
+
+    for task in tasks:
+        db_task = TaskDB(
+            title=task.title,
+            description=task.description,
+            completed=False
+        )
+        db.add(db_task)
+        new_tasks.append(db_task)
+
+    db.commit()
+
+    for task in new_tasks:
+        db.refresh(task)
+
+    return new_tasks
