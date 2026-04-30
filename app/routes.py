@@ -40,7 +40,8 @@ def create_task(
         title=task.title,
         description=task.description,
         completed=False,
-        user_id=current_user.id,                                       # ← new
+        due_date=task.due_date,             # ← added
+        user_id=current_user.id,
     )
     db.add(new_task)
     db.commit()
@@ -61,6 +62,7 @@ def update_task(
 
     task.title = updated_task.title
     task.description = updated_task.description
+    task.due_date = updated_task.due_date   # ← added
     db.commit()
     db.refresh(task)
     return task
@@ -109,7 +111,8 @@ def create_tasks_bulk(
             title=task.title,
             description=task.description,
             completed=False,
-            user_id=current_user.id,                                   # ← new
+            due_date=task.due_date,         # ← added
+            user_id=current_user.id,
         )
         db.add(db_task)
         new_tasks.append(db_task)
