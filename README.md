@@ -1,1 +1,19 @@
-A full-stack task management application with a FastAPI backend and a React/Vite frontend styled with Tailwind CSS. Implements JWT authentication, due-date tracking, and light/dark mode, developed and version-controlled through a structured branching workflow.
+# Task Manager App
+
+A backend task management application built with FastAPI.
+
+## Features
+- Create tasks
+- View tasks
+- Update tasks
+- Delete tasks
+
+## Tech Stack
+- Python
+- FastAPI
+- Git/GitHub
+
+## Installation
+```bash
+pip install -r requirements.txt
+uvicorn main:app --reload
