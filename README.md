@@ -1,0 +1,1 @@
+A full-stack task management application with a FastAPI backend and a React/Vite frontend styled with Tailwind CSS. Implements JWT authentication, due-date tracking, and light/dark mode, developed and version-controlled through a structured branching workflow.
